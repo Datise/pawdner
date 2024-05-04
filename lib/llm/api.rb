@@ -4,15 +4,12 @@ module Llm
   # Api is responsible for making http requests to the model. Use it to swap models
   class Api
     def initialize
-      @client = Aws::BedrockRuntime::Client.new(
-        region: 'us-west-2',
-        credentials: Aws::Credentials.new(Rails.application.credentials.aws_access_key_id, Rails.application.credentials.aws_secret_access_key)
-      )
+      @client = Aws::BedrockRuntime::Client.new
     end
 
     def invoke(text)
-      resp = @client.invoke_model(params(text))
-      JSON.parse(resp.body.read)
+      @resp = @client.invoke_model(params(text))
+      JSON.parse(@resp.body.read)
     end
 
     def params(text)
